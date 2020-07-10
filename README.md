@@ -1,5 +1,8 @@
 # BERT(S) for Relation Extraction
 
+This is a fork of [plkmo/BERT-Relation-Extraction](https://github.com/plkmo/BERT-Relation-Extraction)
+focused on biomedical data.
+
 ## Overview
 A PyTorch implementation of the models for the paper ["Matching the Blanks: Distributional Similarity for Relation Learning"](https://arxiv.org/pdf/1906.03158.pdf) published in ACL 2019.  
 Note: This is not an official repo for the paper.  
@@ -8,19 +11,20 @@ Additional models for relation extraction, implemented here based on the paper's
 - BioBERT (https://arxiv.org/abs/1901.08746)
 
 ## Requirements
-Requirements: Python (3.6+), PyTorch (1.2.0+), Spacy (2.1.8+)  
+Requirements: Python (3.6+), PyTorch (1.2.0+), Spacy (2.2.1+)  
+
+SciSpacy models (https://allenai.github.io/scispacy/) for the generation of pretraining data on biomedical text.
 
 Pre-trained BERT models (ALBERT, BERT) courtesy of HuggingFace.co (https://huggingface.co)   
 Pre-trained BioBERT model courtesy of https://github.com/dmis-lab/biobert   
 
-To use BioBERT(biobert_v1.1_pubmed), download & unzip the [contents](https://drive.google.com/file/d/1zKTBqqrCGlclb3zgBGGpq_70Fx-qFpiU/view?usp=sharing) to ./additional_models folder.   
+To use BioBERT(biobert\_v1.1\_pubmed), download & unzip the [contents](https://drive.google.com/file/d/1zKTBqqrCGlclb3zgBGGpq_70Fx-qFpiU/view?usp=sharing) to ./additional_models folder.   
 
 ## Training by matching the blanks (BERT<sub>EM</sub> + MTB)
 Run main_pretraining.py with arguments below. Pre-training data can be any .txt continuous text file.  
 We use Spacy NLP to grab pairwise entities (within a window size of 40 tokens length) from the text to form relation statements for pre-training. Entities recognition are based on NER and dependency tree parsing of objects/subjects.  
 
-The pre-training data taken from CNN dataset (cnn.txt) that I've used can be downloaded [here.](https://drive.google.com/file/d/1aMiIZXLpO7JF-z_Zte3uH7OCo4Uk_0do/view?usp=sharing)   
-However, do note that the paper uses wiki dumps data for MTB pre-training which is much larger than the CNN dataset.   
+The pre-training data taken from the MedMentions dataset (medmentions.txt) will be available soon.
 
 Note: Pre-training can take a long time, depending on available GPU. It is possible to directly fine-tune on the relation-extraction task and still get reasonable results, following the section below.  
 
@@ -38,6 +42,7 @@ main_pretraining.py [-h]
 	[--model_size MODEL_SIZE (BERT: 'bert-base-uncased', 'bert-large-uncased';   
 				ALBERT: 'albert-base-v2', 'albert-large-v2';   
 				BioBERT: 'bert-base-uncased' (biobert_v1.1_pubmed))]
+	[--spacy_model SPACY_MODEL ('en_core_web_lg', 'en_core_sci_lg')]
 ```
 
 ## Fine-tuning on SemEval2010 Task 8 (BERT<sub>EM</sub>/BERT<sub>EM</sub> + MTB)

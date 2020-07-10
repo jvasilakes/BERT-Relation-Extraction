@@ -39,6 +39,9 @@ if __name__ == "__main__":
                                                                                     For ALBERT: 'albert-base-v2',\
                                                                                                 'albert-large-v2',\
                                                                                     For BioBERT: 'bert-base-uncased' (biobert_v1.1_pubmed)")
+    parser.add_argument("--spacy_model", type=str, default="en_core_web_lg",
+                        help="""Spacy model to use for NER. Recommended are
+                                ('en_core_web_lg', 'en_core_sci_lg')""")
     
     args = parser.parse_args()
     
